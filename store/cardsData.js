@@ -202,6 +202,24 @@ const CardsData = {
 
             }
 
-    }
+    },
+    12: {
+
+        name: "Рыба-мех",
+        img: "assets/images/12.png",
+        stats:
+            {
+                attack: 10,
+                defense: 10,
+                magic: 40,
+                long_dist: 10,
+                intelligence: 10,
+                speed: 10,
+
+
+            }
+
+    },
+
 }
 export default CardsData
