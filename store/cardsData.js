@@ -220,6 +220,40 @@ const CardsData = {
             }
 
     },
+    13: {
+
+        name: "Тычкан",
+        img: "assets/images/13.png",
+        stats:
+            {
+                attack: 10,
+                defense: 10,
+                magic: 40,
+                long_dist: 10,
+                intelligence: 10,
+                speed: 10,
+
+
+            }
+
+    },
+    14: {
+
+        name: "Бака",
+        img: "assets/images/14.png",
+        stats:
+            {
+                attack: 10,
+                defense: 10,
+                magic: 40,
+                long_dist: 10,
+                intelligence: 10,
+                speed: 10,
+
+
+            }
+
+    },
 
 }
 export default CardsData

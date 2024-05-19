@@ -1,5 +1,16 @@
 import CardsData from "../store/cardsData.js";
 
+window.Telegram.WebApp.ready();
+window.Telegram.WebApp.expand();
+
+function sendResultToTelegram(result) {
+    window.Telegram.WebApp.sendData(JSON.stringify(result));
+}
+
+function closeWebApp() {
+    window.Telegram.WebApp.close();
+}
+
 class Card {
     constructor(id, card_name, img, stats) {
         this.canvas = canvas;
@@ -243,11 +254,11 @@ const performAttack = (attacker, attackingCardIndex, targetCardIndex, callback) 
 const calculateDamage = (attackerCard, targetCard) => {
     switch (curAttackType) {
         case "sword":
-            return 50; // Пример значения урона
+            return 50;
         case "long":
-            return 40; // Пример значения урона
+            return 40;
         case "magic":
-            return 60; // Пример значения урона
+            return 60;
         default:
             return 0;
     }
@@ -304,9 +315,15 @@ const checkGameOver = () => {
     const enemyAlive = Object.values(curEnemies).some(card => card.isAlive);
 
     if (!playerAlive) {
-        displayModal("Вы проиграли!", 2000);
+        displayModal("Вы проиграли!", 2000, () => {
+            sendResultToTelegram([]);
+            setTimeout(closeWebApp, 2000);
+        });
     } else if (!enemyAlive) {
-        displayModal("Вы выиграли!", 2000);
+        displayModal("Вы выиграли!", 2000, () => {
+            sendResultToTelegram(enemyList);
+            setTimeout(closeWebApp, 2000);
+        });
     }
 };
 
