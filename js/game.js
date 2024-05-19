@@ -14,8 +14,23 @@ class Card {
     }
 }
 
-const enemyList = [10, 11, 9];
-const allyList = [1, 2, 3];
+function getDataFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const dataParam = urlParams.get('data');
+    if (dataParam) {
+        try {
+            return JSON.parse(decodeURIComponent(dataParam));
+        } catch (e) {
+            console.error("Failed to parse 'data' parameter from URL", e);
+            return [];
+        }
+    }
+    return [];
+}
+
+const data = getDataFromUrl();
+const allyList = data.slice(0, 3);
+const enemyList = data.slice(3, 6);
 const canvas = document.getElementById("canvas");
 const playerCanvas = document.getElementById("player--canvas");
 const enemyCanvas = document.getElementById("enemy--canvas");
