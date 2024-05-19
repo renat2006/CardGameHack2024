@@ -8,7 +8,11 @@ body, html {
 
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to bottom, #ff7f7f, #7fff7f);
+    background-image: url("../assets/back.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
 }
 
 .enemy--canvas {
@@ -16,7 +20,10 @@ body, html {
 }
 
 .player--canvas, .enemy--canvas {
-    border: 2px solid red;
+    background-color: rgba(0, 0, 0, 0.24);
+    border: 2px solid white;
+    backdrop-filter: blur(2px);
+
     display: flex;
     width: 100%;
     flex-wrap: wrap;
@@ -29,6 +36,11 @@ body, html {
     width: 100px;
 }
 
+.cards {
+    z-index: 1000;
+    position: relative;
+}
+
 .first--card {
     flex-basis: 100%;
     display: flex;
@@ -39,7 +51,8 @@ body, html {
 .modal {
     font-family: "Open Sans", sans-serif;
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 19px;
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 30px;
     min-width: 200px;
     display: flex;
@@ -55,9 +68,6 @@ body, html {
 
 }
 
-.disabled {
-    display: none;
-}
 
 .turn {
 
@@ -68,6 +78,14 @@ body, html {
     transition: 0.4s;
 
 
+}
+
+.xp {
+    position: absolute;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 500;
+    color: red;
+    left: 30px;
 }
 
 @keyframes flareAnimation {
@@ -87,14 +105,171 @@ body, html {
 }
 
 .attack_choose--modal {
-    position: absolute;
-    display: flex;
-    width: 318px;
+    font-family: "Open Sans", sans-serif;
+
+    border-radius: 19px;
+    background-color: rgba(0, 0, 0, 0.7);
+
+    min-width: 200px;
+
+    justify-content: center;
+    color: white;
+    z-index: 10000;
+
+    outline: none;
+
     height: 432px;
-    padding: 25px 59px;
+    padding: 25px 30px;
+    flex-direction: column;
+
+    align-items: center;
+    gap: 30px;
+    flex-shrink: 0;
+}
+
+dialog::backdrop {
+    background-color: rgb(0 0 0 / 70%);
+}
+
+.options {
+    display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 30px;
+
+}
+
+.attack_choose_button {
+    outline: none;
+    border: none;
+}
+
+.attack_choose_button {
+    color: black;
+    display: flex;
+    height: 70px;
+    padding: 0px 20px;
+    justify-content: center;
     align-items: center;
-    gap: 38px;
+    gap: 10px;
     flex-shrink: 0;
+    border-radius: 19px;
+    background: #FFF;
+
+    width: 250px;
+    text-align: center;
+    font-family: "Open Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.magicAttack {
+    animation: magic 2s linear;
+}
+
+.sword_attack {
+    position: absolute;
+
+    transform: rotate(45deg);
+
+    z-index: -1;
+    animation: sword 2s linear;
+    top: -80px;
+    left: 100px;
+
+}
+
+.long_attack {
+    position: absolute;
+
+    transform: rotate(-145deg);
+    z-index: 10000;
+    top: 220px;
+    left: 0;
+
+}
+
+.arrow {
+    position: absolute;
+
+    transform: rotate(73deg);
+    left: 0;
+    z-index: 10000;
+    top: 220px;
+    animation: bow 1s linear;
+
+}
+
+@keyframes sword {
+    0% {
+        top: -80px;
+        left: 100px;
+
+    }
+    50% {
+
+        top: -40px;
+        left: 0;
+    }
+    100% {
+
+        top: -80px;
+        left: 100px;
+    }
+}
+
+@keyframes magic {
+    0% {
+        filter: hue-rotate(0deg);
+
+    }
+    30% {
+
+        filter: hue-rotate(70deg);
+    }
+    40% {
+        filter: hue-rotate(140deg);
+    }
+    70% {
+        filter: hue-rotate(220deg);
+    }
+    90% {
+        filter: hue-rotate(300deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+
+}
+
+.dead {
+    filter: grayscale(100%);
+    transition: 0.6s;
+}
+
+@keyframes bow {
+    0% {
+        left: 0;
+
+        top: 220px;
+
+    }
+    100% {
+
+        left: 0;
+
+        top: 40px;
+    }
+
+}
+
+
+.attack_choose_button img {
+    width: 38px;
+}
+
+.disabled {
+    display: none;
 }
