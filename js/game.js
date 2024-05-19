@@ -14,8 +14,8 @@ class Card {
     }
 }
 
-const enemyList = [1, 2, 3];
-const allyList = [4, 5, 6];
+const enemyList = [10, 11, 9];
+const allyList = [1, 2, 3];
 const canvas = document.getElementById("canvas");
 const playerCanvas = document.getElementById("player--canvas");
 const enemyCanvas = document.getElementById("enemy--canvas");

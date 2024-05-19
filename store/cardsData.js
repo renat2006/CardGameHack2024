@@ -1,8 +1,8 @@
 const CardsData = {
-    1: {
+    0: {
 
-        name: "Enemy1",
-        img: "assets/images/su_anasy.png",
+        name: "Аксакал",
+        img: "assets/images/0.png",
         stats:
             {
                 attack: 10,
@@ -16,10 +16,10 @@ const CardsData = {
             }
 
     },
-    2: {
-        img: "assets/images/yha.png",
+    1: {
+        img: "assets/images/1.png",
 
-        name: "Enemy2",
+        name: "Булат",
         stats:
             {
                 attack: 20,
@@ -33,10 +33,10 @@ const CardsData = {
             }
 
     },
-    3: {
+    2: {
 
-        name: "Enemy3",
-        img: "assets/images/yha.png",
+        name: "Диляра",
+        img: "assets/images/2.png",
         stats:
             {
                 attack: 60,
@@ -50,10 +50,27 @@ const CardsData = {
             }
 
     },
+    3: {
+
+        name: "Кот Казанский",
+        img: "assets/images/3.png",
+        stats:
+            {
+                attack: 10,
+                defense: 10,
+                magic: 40,
+                long_dist: 10,
+                intelligence: 10,
+                speed: 10,
+
+
+            }
+
+    },
     4: {
 
-        name: "Player1",
-        img: "assets/images/yha.png",
+        name: "Рыба-мех",
+        img: "assets/images/4.png",
         stats:
             {
                 attack: 10,
@@ -69,8 +86,8 @@ const CardsData = {
     },
     5: {
 
-        name: "Player2",
-        img: "assets/images/yha.png",
+        name: "Змея",
+        img: "assets/images/5.png",
         stats:
             {
                 attack: 10,
@@ -86,8 +103,93 @@ const CardsData = {
     },
     6: {
 
-        name: "Player3",
-        img: "assets/images/su_anasy.png",
+        name: "Змея",
+        img: "assets/images/6.png",
+        stats:
+            {
+                attack: 10,
+                defense: 10,
+                magic: 40,
+                long_dist: 10,
+                intelligence: 10,
+                speed: 10,
+
+
+            }
+
+    },
+    7: {
+
+        name: "Стражник",
+        img: "assets/images/7.png",
+        stats:
+            {
+                attack: 10,
+                defense: 10,
+                magic: 40,
+                long_dist: 10,
+                intelligence: 10,
+                speed: 10,
+
+
+            }
+
+    },
+    8: {
+
+        name: "Стражник",
+        img: "assets/images/8.png",
+        stats:
+            {
+                attack: 10,
+                defense: 10,
+                magic: 40,
+                long_dist: 10,
+                intelligence: 10,
+                speed: 10,
+
+
+            }
+
+    },
+    9: {
+
+        name: "Стражник",
+        img: "assets/images/9.png",
+        stats:
+            {
+                attack: 10,
+                defense: 10,
+                magic: 40,
+                long_dist: 10,
+                intelligence: 10,
+                speed: 10,
+
+
+            }
+
+    },
+    10: {
+
+        name: "Юха",
+        img: "assets/images/10.png",
+        stats:
+            {
+                attack: 10,
+                defense: 10,
+                magic: 40,
+                long_dist: 10,
+                intelligence: 10,
+                speed: 10,
+
+
+            }
+
+    },
+    11: {
+
+        name: "Су анасы",
+        img: "assets/images/11.png",
         stats:
             {
                 attack: 10,
