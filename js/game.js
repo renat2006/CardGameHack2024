@@ -4,7 +4,8 @@ window.Telegram.WebApp.ready();
 window.Telegram.WebApp.expand();
 
 function sendResultToTelegram(result) {
-    window.Telegram.WebApp.sendData(JSON.stringify(result));
+    let res = {data:result}
+    window.Telegram.WebApp.sendData(JSON.stringify(res));
 }
 
 function closeWebApp() {
@@ -33,15 +34,16 @@ function getDataFromUrl() {
             return JSON.parse(decodeURIComponent(dataParam));
         } catch (e) {
             console.error("Failed to parse 'data' parameter from URL", e);
-            return [];
+            return [1, 2, 3, 4, 5, 6];
         }
     }
-    return [];
+    return [1, 2, 3, 4, 5, 6];
 }
 
 const data = getDataFromUrl();
 const allyList = data.slice(0, 3);
 const enemyList = data.slice(3, 6);
+console.log(allyList, enemyList)
 const canvas = document.getElementById("canvas");
 const playerCanvas = document.getElementById("player--canvas");
 const enemyCanvas = document.getElementById("enemy--canvas");
