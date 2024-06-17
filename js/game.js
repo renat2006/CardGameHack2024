@@ -371,7 +371,7 @@ const checkGameOver = () => {
 
         if (!playerAlive) {
             displayModal("Вы проиграли!", 2000, () => {
-                sendResultToTelegram("lose", "lose");
+                sendResultToTelegram("lose", info);
                 setTimeout(closeWebApp, 1000);
             });
         } else if (!enemyAlive) {
