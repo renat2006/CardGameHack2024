@@ -71,9 +71,9 @@ const PlayerFieldRender = () => {
     const secondCard = document.getElementById("player--card2");
     const thirdCard = document.getElementById("player--card3");
 
-    firstCard.children[0].setAttribute("src", CardsData[allyList[0]].img);
-    secondCard.children[0].setAttribute("src", CardsData[allyList[1]].img);
-    thirdCard.children[0].setAttribute("src", CardsData[allyList[2]].img);
+    firstCard.children[0].setAttribute("src", CardsData[allyList[0]].min_img);
+    secondCard.children[0].setAttribute("src", CardsData[allyList[1]].min_img);
+    thirdCard.children[0].setAttribute("src", CardsData[allyList[2]].min_img);
 };
 
 const EnemyFieldRender = () => {
@@ -81,9 +81,9 @@ const EnemyFieldRender = () => {
     const secondCard = document.getElementById("enemy--card2");
     const thirdCard = document.getElementById("enemy--card3");
 
-    firstCard.children[0].setAttribute("src", CardsData[enemyList[0]].img);
-    secondCard.children[0].setAttribute("src", CardsData[enemyList[1]].img);
-    thirdCard.children[0].setAttribute("src", CardsData[enemyList[2]].img);
+    firstCard.children[0].setAttribute("src", CardsData[enemyList[0]].min_img);
+    secondCard.children[0].setAttribute("src", CardsData[enemyList[1]].min_img);
+    thirdCard.children[0].setAttribute("src", CardsData[enemyList[2]].min_img);
 };
 
 const renderModal = (text) => {
