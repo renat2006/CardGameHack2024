@@ -3,8 +3,11 @@ import CardsData from "../store/cardsData.js";
 window.Telegram.WebApp.ready();
 window.Telegram.WebApp.expand();
 
-function sendResultToTelegram(result) {
-    let res = {data:result}
+function sendResultToTelegram(data, info) {
+    let res = {
+        data: data,
+        info: info
+    };
     window.Telegram.WebApp.sendData(JSON.stringify(res));
 }
 
@@ -40,10 +43,25 @@ function getDataFromUrl() {
     return [1, 2, 3, 4, 5, 6];
 }
 
+function getInfoFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const infoParam = urlParams.get('info');
+    if (infoParam) {
+        try {
+            return decodeURIComponent(infoParam);
+        } catch (e) {
+            console.error("Failed to parse 'info' parameter from URL", e);
+            return "wrong_data";
+        }
+    }
+    return "wrong_data";
+}
+
 const data = getDataFromUrl();
+const info = getInfoFromUrl();
 const allyList = data.slice(0, 3);
 const enemyList = data.slice(3, 6);
-console.log(allyList, enemyList)
+console.log(allyList, enemyList);
 const canvas = document.getElementById("canvas");
 const playerCanvas = document.getElementById("player--canvas");
 const enemyCanvas = document.getElementById("enemy--canvas");
@@ -120,6 +138,7 @@ const closeModal = (callback) => {
 let playerCardTurnNumber = 0;
 let turn = "player";
 let curAttackType = -1;
+let gameOver = false;
 
 let curEnemies = {
     0: {
@@ -164,9 +183,13 @@ let curPlayers = {
 };
 
 const turnChooseEnemy = () => {
+    if (gameOver) return;
+
     for (let card of enemyCanvas.children) {
         card.classList.add("cardHover");
         card.addEventListener("click", () => {
+            if (gameOver) return;
+
             let card_id = card.getAttribute("card_id");
             displayAttackModal(CardsData[enemyList[card_id]], card_id, () => {
                 if (curAttackType === "sword") {
@@ -178,8 +201,10 @@ const turnChooseEnemy = () => {
                 }
                 performAttack("player", playerCardTurnNumber, card_id, () => {
                     checkGameOver();
-                    turn = "computer";
-                    setTimeout(handleComputerTurn, 1000);
+                    if (!gameOver) {
+                        turn = "computer";
+                        setTimeout(handleComputerTurn, 1000);
+                    }
                 });
             });
         });
@@ -199,6 +224,8 @@ document.querySelectorAll('.attack_choose_button').forEach(button => {
 });
 
 const game = () => {
+    if (gameOver) return;
+
     if (turn === "player") {
         handlePlayerTurn();
     } else {
@@ -207,6 +234,8 @@ const game = () => {
 };
 
 const handlePlayerTurn = () => {
+    if (gameOver) return;
+
     if (curPlayers[playerCardTurnNumber].isAlive) {
         const currentPlayerCard = playerCanvas.children[playerCardTurnNumber].children[0];
         currentPlayerCard.classList.add("turn");
@@ -219,6 +248,8 @@ const handlePlayerTurn = () => {
 };
 
 const handleComputerTurn = () => {
+    if (gameOver) return;
+
     const cardToAttack = getWeakestPlayerCard();
     if (cardToAttack !== null) {
         const attackingCard = getAliveComputerCard();
@@ -226,8 +257,10 @@ const handleComputerTurn = () => {
             displayModal(`Компьютер атакует!`, 2000, () => {
                 performAttack("computer", attackingCard, cardToAttack, () => {
                     checkGameOver();
-                    turn = "player";
-                    nextPlayerTurn();
+                    if (!gameOver) {
+                        turn = "player";
+                        nextPlayerTurn();
+                    }
                 });
             });
         }
@@ -235,6 +268,8 @@ const handleComputerTurn = () => {
 };
 
 const performAttack = (attacker, attackingCardIndex, targetCardIndex, callback) => {
+    if (gameOver) return;
+
     const attackerCard = attacker === "player" ? curPlayers[attackingCardIndex] : curEnemies[attackingCardIndex];
     const targetCard = attacker === "player" ? curEnemies[targetCardIndex] : curPlayers[targetCardIndex];
 
@@ -254,35 +289,50 @@ const performAttack = (attacker, attackingCardIndex, targetCardIndex, callback) 
 };
 
 const calculateDamage = (attackerCard, targetCard) => {
+    const attackerStats = attackerCard.stats;
+    const targetStats = targetCard.stats;
+
+    let hitChance, damage;
+
     switch (curAttackType) {
         case "sword":
-            return 50;
+            hitChance = attackerStats.attack / targetStats.defense;
+            damage = hitChance >= Math.random() ? (attackerStats.attack ** 2 / targetStats.defense) : 0;
+            break;
         case "long":
-            return 40;
+            hitChance = ((attackerStats.attack + attackerStats.long_dist + attackerStats.intelligence) / 3) / targetStats.defense;
+            damage = hitChance >= Math.random() ? (hitChance * (attackerStats.attack + Math.floor(Math.random() * (30 - 10 + 1)) + 10)) : 0;
+            break;
         case "magic":
-            return 60;
+            hitChance = ((attackerStats.attack + attackerStats.magic + attackerStats.intelligence) / 3) / targetStats.defense;
+            damage = hitChance >= Math.random() ? ((attackerStats.magic / targetStats.defense) * (2 * attackerStats.attack)) : 0;
+            break;
         default:
-            return 0;
+            damage = 0;
+            break;
     }
+
+    return Math.round(damage);
 };
 
 const displayDamage = (targetType, targetCardIndex, damage) => {
-    console.log(`#${targetType}--card${parseInt(targetCardIndex) + 1}`)
+    console.log(`#${targetType}--card${parseInt(targetCardIndex) + 1}`);
     const targetElement = document.querySelector(`#${targetType}--card${parseInt(targetCardIndex) + 1}`);
     if (targetElement) {
         const damageElement = document.createElement('div');
-        damageElement.classList.add("xp")
+        damageElement.classList.add("xp");
         damageElement.classList.add('damage-display');
         damageElement.textContent = `-${damage}xp`;
         targetElement.appendChild(damageElement);
         setTimeout(() => {
             damageElement.remove();
-
         }, 2000);
     }
 };
 
 const nextPlayerTurn = () => {
+    if (gameOver) return;
+
     const currentPlayerCard = playerCanvas.children[playerCardTurnNumber].children[0];
     currentPlayerCard.classList.remove("turn");
     playerCardTurnNumber = (playerCardTurnNumber + 1) % Object.keys(curPlayers).length;
@@ -316,16 +366,20 @@ const checkGameOver = () => {
     const playerAlive = Object.values(curPlayers).some(card => card.isAlive);
     const enemyAlive = Object.values(curEnemies).some(card => card.isAlive);
 
-    if (!playerAlive) {
-        displayModal("Вы проиграли!", 2000, () => {
-            sendResultToTelegram("lose");
-            setTimeout(closeWebApp, 1000);
-        });
-    } else if (!enemyAlive) {
-        displayModal("Вы выиграли!", 2000, () => {
-            sendResultToTelegram(enemyList);
-            setTimeout(closeWebApp, 1000);
-        });
+    if (!playerAlive || !enemyAlive) {
+        gameOver = true;
+
+        if (!playerAlive) {
+            displayModal("Вы проиграли!", 2000, () => {
+                sendResultToTelegram("lose", "lose");
+                setTimeout(closeWebApp, 1000);
+            });
+        } else if (!enemyAlive) {
+            displayModal("Вы выиграли!", 2000, () => {
+                sendResultToTelegram(enemyList, info);
+                setTimeout(closeWebApp, 1000);
+            });
+        }
     }
 };
 
